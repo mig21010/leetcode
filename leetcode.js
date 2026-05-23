@@ -285,6 +285,8 @@ function getSum(a,b){
 	return a
 }
 
+/*--------------------------------------------------------------------------OA*/
+
 
 //Throttling Gateway
 
@@ -307,4 +309,36 @@ function throottlinGateway(requestTime){
 	}
 
 	return dropped
+}
+
+
+//Customer Reviews Given a repository of keywords and a customerQuery, return keyword suggestions after each character typed (starting from 2 characters). Return max 3 suggestions in alphabetical order that start with the typed prefix.
+
+function customerReviews(customerQuery, repository){
+
+	repository.sort((a,b) => 
+		a.toLowerCase().localeCompare(b.toLowerCase())
+	)
+
+	const result= []
+
+	for(let i =2; i<=customerQuery.length; i++){
+
+		const prefix = customerQuery.slice(0,i).toLowerCase()
+		const suggestions = repository
+			.filter(word=> word.toLowerCase().startsWith(prefix))
+			.slice(0,3)
+			.map(word => word.toLowerCase())
+
+
+		result.push(suggestions)
+
+
+	}
+
+
+	return result
+
+
+
 }
