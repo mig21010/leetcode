@@ -342,3 +342,346 @@ function customerReviews(customerQuery, repository){
 
 
 }
+
+//Binary Search
+
+
+function binarySearch(nums, target){
+
+	let left = 0
+	let right = nums.length-1
+
+	while(left<= right) {
+
+		const mid = Math.floor((left+right) /2)
+
+		if(nums[mid] === target){
+			return mid
+		} else if(nums[mid] < target){
+			left = mid + 1
+		} else {
+			right = mid -1 
+		} 
+	}
+
+	return -1
+}
+
+
+// Min Time Sort Binary String
+function minTime(key){
+
+	const SWAP = 1000000000000n
+	const DELETE = 1000000000001n
+
+	let totalCost = 0
+	let zerosAfter = 0
+
+	for (const c of key){
+
+		if(c==='0') zerosAfter++
+	}
+
+	for(const char of key){
+		if(char === '0'){
+			zerosAfter--
+		}else{
+			if(zerosAfter === 1){
+				totalCost += SWAP
+			} else if(zerosAfter > 1){
+				totalCost += DELETE
+			}
+		}
+	}
+
+	
+
+
+	return totalCost
+}
+
+
+//Connect Ropes
+
+function connectRopes(ropes){
+
+	ropes.sort((a,b) => a-b)
+
+	let totalCost = 0
+
+	while(ropes.length > 1){
+
+		const first = ropes.shift()
+		const second = ropes.shift()
+
+
+		const  combined = first + second 
+
+		totalCost += combined
+		ropes.push(combined)
+
+		ropes.sort((a,b) => a-b)
+
+
+	}
+
+	return totalCost
+
+
+}
+
+//--------------------------------------------------------------------------------------------------Tree
+
+// Maximum Depth of Binary TreeGiven the root of a binary tree, return its maximum depth. A binary tree's maximum depth is the number of nodes along the longest path from the root node down to the farthest leaf node.
+
+
+function maximumDepth(root){
+
+	if(root === null) return 0
+
+	const left = maximumDepth(root.left)
+	const right = maximumDepth(root.right)
+
+	return Math.max(left,right) + 1
+
+
+}
+
+//Same Tree - Given the roots of two binary trees p and q, return true if they are the same tree. Two trees are the same if they have the same structure and node values.
+
+function isSameTree(p, q){
+
+	if(p === null && q === null ) return true
+
+	if(p === null || q === null)return false
+
+
+	return p.val === q.val && isSameTree(p.left, q.left) && isSameTree(p.right, q.right)
+
+}
+
+//Invert Buinary Tree Given the root of a binary tree, invert the tree and return its root
+
+function invertBinaryTree(root){
+
+	if (root === null) return null
+
+	const temp = root.left
+
+	root.left = root.right
+	root.right = temp
+
+	invertBinaryTree(root.left)
+	invertBinaryTree(root.right)
+
+	return root
+
+
+}
+
+// Binary Tree Maximum oath sum Given the root of a binary tree, return the maximum path sum. A path is a sequence of nodes where each pair of adjacent nodes has an edge. The path does not need to pass through the root.
+
+function maxPathSum(root){
+
+	let maxSum= -Infinity
+
+	function dfs(node){
+
+		if (node === null) return 0
+
+		const left = Math.max(0, dfs(node.left))
+		const right = Math.max(0, dfs(node.right))
+
+		maxSum = Math.max(maxSum, left +node.val + right)
+
+		return node.val + Math.max(left, right)
+	}
+
+	dfs(root)
+
+	return maxSum
+}
+
+
+
+// Binary tree level order trasversal Given the root of a binary tree, return the values level by level from left to right.
+
+function treeLevelOrderTraversal(root){
+
+	if(root === null) return []
+
+		const result = []
+		const queue = [root]
+
+		while(queue.length > 0){
+
+			const level = []
+			const size = queue.length
+
+			for (let i = 0; i < size; i++){
+
+				const node = queue.shift()
+				level.push(node.val)
+
+				if(node.left) queue.push(node.left)
+				if(node.right) queue.push(node.right)
+			}
+
+			result.push(level)
+		}
+
+		return result
+
+	
+}
+
+
+//Serialize and Deserialize Binary Tree
+/*Design an algorithm to serialize and deserialize a binary tree.
+
+Serialize — convierte el árbol a un string
+Deserialize — convierte el string de vuelta al árbol*/
+
+
+const serialize = function(root){
+
+	const result = []
+
+	function dfs(node){
+
+		if(node === null){
+			result.push('null')
+			return
+		}
+
+		result.push(node.val)
+		dfs(node.left)
+		dfs(node.right)
+	}
+
+	dfs(root)
+	return result.join(',')
+}
+
+const deserialize = function(data){
+
+	const nodes = data.split(',')
+	let index = 0
+
+	function dfs(){
+
+		if(nodes[index] === 'null'){
+
+			index++
+			return null
+		}
+
+
+		const node = new TreeNode(parseInt(nodes[index]))
+
+		index++
+		node.left=dfs()
+		node.right= dfs()
+		return node
+	}
+
+	return dfs()
+}
+
+//Subtree of another tree
+//Given the roots of two binary trees root and subRoot, return true if there is a subtree of root with the same structure and node values as subRoot.
+
+
+function isSameTree(p, q) {
+    if (p === null && q === null) return true
+    if (p === null || q === null) return false
+    return p.val === q.val &&
+           isSameTree(p.left, q.left) &&
+           isSameTree(p.right, q.right)
+}
+
+function isSubtree(root, subRoot){
+
+	if(root===null) return false
+	if(isSameTree(root, subRoot)) return true
+
+	return isSubtree(root.left, subRoot) || isSubtree(root.right, subRoot)
+}
+
+
+//Construct Binary Tree from Preorder and Inorder Traversal
+//Given two integer arrays preorder and inorder, construct and return the binary tree.
+
+function buildTree(preOrder, inOrder){
+
+	if(preOrder.length === 0) return null
+
+	const rootVal = preOrder[0]
+	const root = new TreeNode(rootVal)
+
+	const mid = inOrder.indexOf(rootVal)
+
+	root.left = buildTree(
+		preOrder.slice(1, mid + 1),
+		inOrder.slice(0, mid)
+
+	)
+
+
+	root.right = buildTree(
+
+		preOrder.slice(mid + 1),
+		inOrder.slice(mid + 1)
+	)
+
+
+	return root
+
+
+}
+
+//Validate Binary Search Tree
+//Given the root of a binary tree, determine if it is a valid BST.
+/*A valid BST:
+
+Left subtree nodes are less than the root
+Right subtree nodes are greater than the root
+Both subtrees are also valid BSTs*/
+
+
+function isValidBST(root){
+	
+	function validate(node, min, max){
+		if(node === null) return true
+
+		if(node.val <= min || node.val >= max) return false
+
+
+		return validate(node.left, min, node.val) &&  validate(node.right, node.val, max)
+
+	}
+
+	return validate(root, -Infinity, Infinity)
+
+
+
+}
+
+//Kth Smallest Element in a BST
+//Given the root of a BST and an integer k, return the kth smallest value.
+
+function kthSmallest(root, k){
+
+	const values = []
+
+	function inorder(node){
+		if(node === null) return
+		inorder(node.left)
+		values.push(node.val)
+		inorder(node.right)
+	}
+
+	inorder(root)
+
+	return values[k-1]
+}
