@@ -685,3 +685,222 @@ function kthSmallest(root, k){
 
 	return values[k-1]
 }
+//Minimun swaps
+
+function minSwaps(arr){
+
+	let swapsZerosLeft = 0
+	let swapsOnesLeft = 0
+	let ones = 0
+	let zeros = 0
+
+	for (const num of arr){
+
+		if(num ===1){
+			ones++
+			swapsOnesLeft += zeros
+		} else {
+			zeros++
+			swapsZerosLeft += ones
+		}
+	}
+
+	return Math.min(swapsZerosLeft, swapsOnesLeft)
+}
+
+//Implement Trie (Prefix Tree)
+
+class TrieNode{
+
+	constructor(){
+		this.children = {}
+		this.isEnd = false
+	}
+
+}
+
+class Trie{
+
+	constructor(){
+		this.root = new TrieNode()
+	}
+
+
+	insert(word){
+
+		let node = this.root
+
+		for(const char of word){
+			if(!node.children[char]){
+				node.children[char] = new TrieNode()
+			}
+
+			node = node.children[char]
+		}
+
+		node.isEnd = true
+	}
+
+	search(word){
+		let node = this.root
+		for (const char of word){
+			if(!node.children[char]) return false
+				node = node.children[char]
+		}
+
+		return node.isEnd
+	}
+
+	startsWith(prefix){
+		let node = this.root
+		for (const char of prefix){
+			if(!node.children[char]) return false
+			node = node.children[char]
+		}
+
+		return true
+	}
+}
+
+
+//Add and Search Word
+
+class WordDictionary{
+
+	constructor() {
+		this.root = new TrieNode()
+	}
+
+	addWord(word){
+		let node = this.root
+
+		for(const char of word){
+			if(!node.children[char]) = new TrieNode()
+			node = node.children[char]
+		}
+
+		node.isEnd = true
+	}
+
+
+	search(word){
+		return this.dfs(word, 0, this.root)
+	}
+
+	dfs(word, index, node){
+
+		if(index === word.length) return node.isEnd
+
+		const char = word[index]
+
+		if(char === '.'){
+			for(const child of Object.values(node.children)){
+				if(this.dfs(word, index + 1, child)) return true
+			}
+
+			return false
+		} else {
+			if(!node.children[char]) return false
+			return this.dfs(word, index + 1, node.children[char])
+		}
+	}
+}
+
+
+//Climbing Stairs
+
+function climbingStairs(n){
+
+	if(n <= 2) return n
+
+	let prev =1
+	let curr = 2
+
+	for (let i =3; i<= n; i++){
+		const temp = curr
+		curr = prev + curr
+		prev = temp
+	}
+
+	return curr
+}
+
+
+//House Robber
+
+//You are a robber planning to rob houses. You cannot rob two adjacent houses. Given an array nums where nums[i] is the amount of money in house i, return the maximum amount you can rob.
+
+
+function roberHouse(nums){
+
+	let prev = 0
+	let current = 0
+
+	for( let i = 0; i< nums.lenght; i++){
+		const  temp = current
+		current = Math.max(current, prev + nums[i])	
+		prev = temp
+	}
+
+	return current
+}
+
+function numIslands(grid) {
+
+	let islands = 0
+	for(let r = 0; r < grid.length; r++){
+
+		for(let c = 0; c< grid[0].length; c++){
+			if(grid[r][c] === '1'){
+				islands++
+				dfs(grid, r, c)
+			}
+		}
+	}
+
+	return islands
+}
+
+function dfs(grid, r, c){
+
+	if(r < 0 || r >= grid.length) return
+	if(c< 0 || c >= grid[0].length) return
+	if(grid[r][c]  === '0') return
+
+
+	grid[r][c] = '0'
+
+	dfs(grid, r - 1, c) //up
+	dfs(grid, r + 1, c) //down
+	dfs(grid, r, c - 1) //left
+	dfs(grid, r, c + 1)// right
+	
+}
+
+
+//Longest Substring Without Repeating Characters
+//Given a string s, find the length of the longest substring without repeating characters.
+
+function lengthOfLongestSubstring(s){
+	const set = new Set()
+	let left = 0
+	let max = 0
+
+	for( let right = 0 ; right < s.length; right ++){
+		const char = s[right]
+
+
+		while(set.has(char)){
+
+			set.delete(s[left])
+			left++
+		}
+
+		set.add(char)
+		max = Math.max(max, right - left + 1)
+	}
+
+
+	return max
+
+}
