@@ -99,6 +99,12 @@ function containsDuplicate(nums){
 
 //product of arrays except itself
 
+/*Given an integer array nums, return an array answer such that answer[i] is equal to the product of all the elements of nums except nums[i].
+
+The product of any prefix or suffix of nums is guaranteed to fit in a 32-bit integer.
+
+You must write an algorithm that runs in O(n) time and without using the division operation.*/
+
 function productArrays(nums){
 
 	const result = new Array(nums.length).fill(1)
@@ -918,4 +924,63 @@ function lengthOfLongestSubstring(s){
 
 	return max
 
+}
+
+//Reverse Linked List
+
+//Given the head of a singly linked list, reverse the list, and return the reversed list.
+
+function reverseList(head){
+    let prev = null
+    let current = head
+
+
+
+    while (current !== null) {
+
+        const next = current.next
+        current.next = prev
+        prev = current
+        current = next
+
+    }
+
+
+    return prev
+
+}
+
+
+//Merge Two Sorted Lists
+
+/*You are given the heads of two sorted linked lists list1 and list2.
+
+Merge the two lists into one sorted list. The list should be made by splicing together the nodes of the first two lists.
+
+Return the head of the merged linked list.*/
+function mergedTwoList(list1, list2){
+    
+    const dummy = new ListNode(0)
+    let current = dummy 
+
+
+    while(list1 !== null && list2 !== null) {
+        if(list1.val <= list2.val) {
+            current.next = list1
+            list1 = list1.next
+        } else {
+
+            current.next = list2
+            list2 = list2.next
+        }
+
+        current = current.next
+
+
+    }
+
+    current.next = list1 || list2
+
+
+    return dummy.next
 }
