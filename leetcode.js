@@ -17,7 +17,7 @@ function maxProfit(prices){
 
 		for(let j = i; j < prices.length; j++ ){
 
-			const profit = pirces[j] - prices[i]
+			const profit = prices[j] - prices[i]
 
 			maxP = Math.max(maxP, profit)
 		}
@@ -830,20 +830,23 @@ class WordDictionary{
 
 //Climbing Stairs
 
-function climbingStairs(n){
+function climbStairs(n){
 
-	if(n <= 2) return n
+	if( n <= 2) return n
 
-	let prev =1
-	let curr = 2
+	let prev2 = 1
+	let prev1 = 2
 
-	for (let i =3; i<= n; i++){
-		const temp = curr
-		curr = prev + curr
-		prev = temp
+	for( let i = 3; i <= n; i++){
+		const current = prev1 + prev2
+		prev2 = prev1
+		prev1 = current
+
 	}
 
-	return curr
+	return prev1
+
+
 }
 
 
@@ -983,4 +986,276 @@ function mergedTwoList(list1, list2){
 
 
     return dummy.next
+}
+
+/*Jump Game
+Given an array nums where nums[i] represents the maximum number of steps you can jump from position i, return true if you can reach the last index, or false otherwise.*/
+
+function canJump(nums){
+	let maxReach = 0
+
+	for(let i = 0; i < nums.length; i++){
+
+		if(i > maxReach) return false
+
+		maxReach = Math.max(maxReach, i + nums[i])
+	}
+
+	return true
+}
+
+
+/*Jump Game II
+
+Given an array nums, return the minimum number of jumps to reach the last index. You can assume you can always reach the last index.*/
+
+function jump(nums){
+
+	let jumps = 0
+	let currentEnd = 0
+	let farthest = 0
+
+
+
+	for( let i = 0; i < nums.length -1; i++){
+
+		farthest = Math.max(farthest, nums[i] + i)
+		if(i === currentEnd){
+			jumps++
+			currentEnd = farthest
+		}
+	
+	}
+
+	return jumps
+}
+
+/*Number of 1 Bits
+Given an integer n, return the number of 1 bits it has.*/
+
+function hammingWeight(n){
+	let count = 0
+	while( n !== 0){
+		n = n  & (n-1)
+		count ++
+	}
+
+	return count
+}
+
+/*Missing Number
+Given an array nums containing n distinct numbers in range [0, n], return the missing number.
+*/
+
+function missingNumber(nums){
+
+	let result = nums.length
+	for(let i = 0; i< nums.length; i++){
+		result = result ^ nums[i] ^ i
+	}
+
+	return result
+}
+
+/*Counting Bits
+Given an integer n, return an array where ans[i] is the number of 1s in the binary representation of i.*/
+
+
+function climbStairs(n){
+
+	if( n <= 2) return n
+
+	let prev2 = 1
+	let prev1 = 2
+
+	for( let i = 3; i <= n; i++){
+		const current = prev1 + prev2
+		prev2 = prev1
+		prev1 = current
+
+	}
+
+	return prev1
+
+
+}
+
+/*Fill The Truck
+You have trucks with maximum capacity and boxes of varying weights. Each truck can only be loaded up to its maximum capacity. Maximize the number of boxes you can load onto a truck*/
+function fillTruck(maxCapacity, boxWeights){
+
+	boxWeights.sort((a,b) => a - b)
+
+	let totalWeight = 0 
+	let count = 0
+
+	for(const weight of boxWeights) {
+		if(totalWeight + weight <= maxCapacity){
+			totalWeight += weight
+
+			count++
+		} else {
+			break
+
+		}
+	}
+
+	return count
+}
+
+/*First Bad Version
+
+You are a product manager and currently leading a team to develop a new product. Unfortunately, the latest version of your product fails the quality check. Since each version is developed based on the previous one, all versions after a bad version are also bad.
+You have n versions and a function isBadVersion(version) returns whether a version is bad. Find the first bad version with minimum API calls.*/
+
+function solution(isBadVersion){
+
+	return function(n){
+		let left = 1
+		let right = n
+
+		while(left < right){
+			const mid = Math.floor((left + right) / 2)
+
+			if(isBadVersion(mid)){
+				right = mid
+			} else {
+				left = mid + 1
+			}
+		}
+
+		return left
+	}
+}
+
+/*Search a 2D Matrix
+Write an efficient algorithm that searches for a value target in an m x n matrix. Each row is sorted left to right and the first integer of each row is greater than the last integer of the previous row.*/
+
+function searchMatrix(matrix,  target){
+
+	const rows = matrix.length
+	const cols = matrix[0].length
+
+	let left = 0
+	let right = rows * cols - 1
+
+	while (left <= right){
+
+		const mid = Math.floor((left + right) / 2)
+		const val = matrix[Math.floor(mid/cols)][mid % cols]
+
+		if(val === target){
+			return true
+		} else if(val < target){
+			left = mid + 1
+		} else {
+			right = mid -1
+		}
+	}
+
+	return false
+}
+
+//Koko Eating Bananas
+/*
+Koko loves to eat bananas. There are n piles of bananas. The guards will come back in h hours. Koko can eat at most k bananas per hour. Find the minimum k such that she can eat all bananas within h hours.*/
+
+function minEatingSpeed(piles, h){
+	let left = 1
+	let right = Math.max(...piles)
+
+	while(left < right){
+		const mid = Math.floor((left + right) / 2)
+
+
+		let hours = 0
+		for (const pile of piles){
+			hours += Math.ceil(pile/ mid)
+		}
+
+		if(hours <= h){
+			right = mid
+		} else {
+			left = mid + 1
+		}
+	}
+
+	return left 
+}
+
+
+/*Valid Anagram
+
+Given two strings s and t, return true if t is an anagram of s, and false otherwise. An anagram uses the same characters the same number of times.*/
+
+function validAnagram(s, t){
+
+	if(s.length !== t.length) return false
+
+
+	const character = new Map()
+	for( const string of s){
+		character.set(string, (character.get(string) || 0) + 1)
+	}
+
+	for(const stringT of t){
+		if(!character.has(stringT)) return false 
+		character.set(stringT, character.get(stringT) - 1)
+
+		if(character.get(stringT) === 0) character.delete(stringT)
+
+	}
+
+
+
+	return true
+
+}
+
+/*Longest Substring Without Repeating Characters
+Given a string s, find the length of the longest substring without repeating characters.*/
+
+function lengthLongestSubstring(s){
+
+	const seen = new Map()
+	let left = 0
+	let max = 0
+
+	for(let right = 0; right < s.length; right ++){
+		const char = s[right]
+
+		if(seen.has(char) && seen.get(char) >= left){
+			left = seen.get(char) + 1
+		}
+
+		seen.set(char, right)
+		max = Math.max(max, right - left + 1)
+	}
+
+
+	return max
+}
+
+/*Group Anagrams
+
+Given an array of strings, group the anagrams together.*/
+
+
+function groupAnagrams(strings){
+
+	const characters = new Map()
+	for(string of strings){
+
+		const key = string.split('').sort().join('');
+
+		if(characters.has(key)){
+
+			characters.get(key).push(string)
+		} else {
+			characters.set(key, [string])
+		}
+	}
+
+	return [...characters.values()]
+
 }
