@@ -1357,3 +1357,49 @@ function findMaximumXOR(nums){
 
 	return max
 }
+
+/*Coin Change
+Given an array of coin denominations coins and an amount amount, return the minimum number of coins needed to make up that amount. If not possible return -1.*/
+
+function coinChange(coins, amount){
+
+	const dp = new Array(amount + 1).fill(Infinity)
+	dp[0] = 0 
+
+	for(let i = 1; i <= amount; i++){
+		for(const coin of coins){
+			if(i - coin >= 0){
+				dp[i] = Math.min(dp[i], dp[i - coin] + 1)
+			}
+		}
+	}
+
+	return dp[amount] === Infinity ? -1 : dp[amount]
+}
+
+/* Product Rating System*/
+
+function productRating(customer_rating, k, m){
+
+	let result = 0 
+	for(let bit = 30; bit >= 0; bit--){
+		const target = result | (1 << bit)
+		let ops = 0
+		let count = 0
+
+		for (const rating of customer_rating){
+			if(rating <= target){
+				ops += target - rating 
+				if(ops <= k) count++
+			} else if((rating & target) === target){
+				count ++
+			}
+		}
+
+		if(count >= m){
+			result = target
+		}
+	}
+
+	return result
+}
