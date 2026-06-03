@@ -1403,3 +1403,29 @@ function productRating(customer_rating, k, m){
 
 	return result
 }
+
+
+JAVASCRIPT QUICK REFERENCE FOR LEETCODE
+Math
+Math.max(a, b)  →  el mayor  |  Math.min(a, b)  →  el menor
+Math.abs(-5)  →  5  |  Math.floor(4.7)  →  4  |  Math.ceil(4.2)  →  5
+Infinity  →  mayor número buscas el minimo  |  -Infinity  →  menor número buscas el maximo
+Arrays
+arr.push(x)  →  agrega al final  |  arr.pop()  →  quita del final
+arr.shift()  →  quita del inicio  |  arr.unshift(x)  →  agrega al inicio
+arr.includes(x)  →  true/false  |  arr.indexOf(x)  →  índice o -1
+arr.map(x => x*2)  →  transforma  |  arr.filter(x => x>0)  →  filtra
+arr.sort((a,b) => a-b)  →  ascendente  |  arr.reverse()  →  invierte
+arr.slice(1,3)  →  copia parte  |  arr.length  →  tamaño
+Strings
+str[0]  →  primer char  |  str.length  →  tamaño
+str.split('')  →  array de chars  |  str.split(' ')  →  separa por espacios
+str.toLowerCase()  →  minúsculas  |  str.toUpperCase()  →  mayúsculas
+str.includes('ab')  →  true/false  |  str.trim()  →  quita espacios
+Map — Hash Map
+const map = new Map()
+map.set('key', value)  →  guardar  |  map.get('key')  →  obtener
+map.has('key')  →  true/false  |  map.size  →  tamaño
+Set — valores únicos
+const set = new Set([1,2,2,3])  →  {1,2,3}
+set.add(x)  →  agregar  |  set.has(x)  →  true/false  |  set.size  →  tamaño
