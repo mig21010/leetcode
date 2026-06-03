@@ -1259,3 +1259,101 @@ function groupAnagrams(strings){
 	return [...characters.values()]
 
 }
+
+
+/*Longest Palindromic Substring
+
+Given a string s, return the longest palindromic substring.*/
+
+
+function longuestPalindrome(s){
+	let result = ''
+
+	function expand(left, right){
+		while(left >= 0 && right < s.length && s[left] === s[right]) {
+			if(right - left + 1 > result.length){
+				result = s.slice(left, right + 1)
+			}
+
+			left --
+			right ++
+		}
+	}
+
+	for(let i = 0; i < s.length; i++){
+		expand(i, i)
+		expand(i, i + 1)
+
+	}
+
+	return result
+}
+
+function longestPalindrome(s) {
+    let result = ''
+
+    function expand(left, right) {
+        if (left < 0 || right >= s.length || s[left] !== s[right]) return
+
+        if (right - left + 1 > result.length) {
+            result = s.slice(left, right + 1)
+        }
+
+        expand(left-1, right+1)  // ← solo esto falta
+    }
+
+    for (let i = 0; i < s.length; i++) {
+        expand(i, i)
+        expand(i, i + 1)
+    }
+
+    return result
+}
+
+
+/*Unique Paths
+
+A robot is on an m x n grid at the top-left corner. It can only move right or down. How many unique paths are there to reach the bottom-right corner?*/
+
+function uniquePaths(m, n){
+
+	const dp = Array(m).fill(null).map(() => Array(n).fill(1))
+
+	for(let i = 1; i < m; i++){
+		for(let j = 1; j < n; j++){
+			dp[i][j] = dp[i-1][j] + dp[i][j-1]
+		}
+	}
+
+	return dp[m-1][n-1]
+}
+
+/*Maximum XOR of Two Numbers
+
+Given an integer array nums, return the maximum XOR of any two numbers.*/
+
+function findMaximumXOR(nums){
+	let max = 0
+	let mask = 0
+
+	for(let i=31; i>= 0; i--){
+
+		mask |= (1 << i)
+
+		const prefixes = new Set()
+		for(const num of nums){
+			prefixes.add(num & mask)
+		}
+
+		const candidate = max | (1 << i)
+
+		for(const prefix of prefixes){
+			if(prefixes.has(candidate ^ prefix)){
+				max = candidate
+				break
+			}
+		}
+	}
+
+	return max
+}
