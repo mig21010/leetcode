@@ -215,11 +215,96 @@ function solution(A, K){
 	let result = new Array(N)
 
 	for(let i=0; i < N; i++){
-		let newIndex = (i = K) % N 
+		let newIndex = (i + K) % N 
 		result[newIndex] = A[i]
 	}
 
 	return result
 
 
+}
+
+/*FrogJump 
+
+A small frog wants to get from
+position X to position Y. The
+frog can jump over D units.
+
+Find the MINIMUM number of jumps
+needed to get from X to Y.*/
+
+function solution(X, Y, D){
+	let distance = Y - X 
+	return Math.ceil(distance / D)
+}
+
+
+/*Distinct
+Given an array A consisting of N
+integers, return the number of
+DISTINCT (unique) values in the array.*/
+
+function solution(A){
+	let set = new Set(A)
+	return set.size
+}
+
+/*Triangle 
+An array A consisting of N integers
+is given. A triplet (P, Q, R) is
+"triangular" if:
+
+A[P] + A[Q] > A[R]
+A[Q] + A[R] > A[P]
+A[R] + A[P] > A[Q]
+
+Determine whether array A contains
+a triangular triplet.
+Return 1 if yes, 0 if no.*/
+
+function solution(A){
+	A.sort((a,b) => a-b)
+
+	for(let i =0; i < A.length-2; i++){
+		if(A[i] + A[i + 1] > A[i + 2]){
+			return 1
+		}
+	}
+
+	return 0
+}
+
+/* MaxProductOfThree
+ Given an array A of N integers,
+find the MAXIMUM product that can
+be obtained by multiplying any
+3 elements from the array.*/
+
+function solution(A){
+	A.sort((a,b) => a - b)
+	let n = A.length
+
+	let option1 = A[n-1] * A[n-2] * A[n-3]
+	let option2 = A[0] * A[1] * A[n-1]
+
+	return Math.max(option1, option2)
+}
+
+
+/*PermMissingElem
+An array A consisting of N different
+integers is given. The array contains
+integers in the range [1..(N+1)] —
+meaning ONE element is missing to
+make it a complete permutation.
+
+Find that missing element.*/
+
+
+function solution(A){
+	let N = A.length
+	let expectedSum = (N + 1) * (N + 2) / 2 
+	let actualSum = A.reduce((sum, num) => sum + num, 0)
+
+	return expectedSum - actualSum
 }
