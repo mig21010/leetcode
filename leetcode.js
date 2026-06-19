@@ -1,4 +1,34 @@
 //let code exercices
+/* Valid Parentheses (Easy)
+
+Given a string with brackets,
+return true if they are valid.
+Valid means: opened and closed
+in the correct order.*/
+
+function isValid(s) {
+    const stack = [];
+    const map = {
+        ')': '(',
+        '}': '{',
+        ']': '['
+    };
+    
+    for (let char of s) {
+        if (char === '(' || char === '{' || char === '[') {
+            // opening bracket → push
+            stack.push(char)
+        } else {
+            // closing bracket → check match
+            if (stack[stack.length - 1] !== map[char]) {
+                return false;
+            }
+            stack.pop
+        }
+    }
+    
+    return stack.length === 0;
+}
 
 //brute force O(n2) Time to Buy and Sell Stock
 
