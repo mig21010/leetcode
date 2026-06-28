@@ -665,3 +665,101 @@ function solution(N, K) {
     
     return result.join('');
 }
+
+/*"Given an array A of N
+integers, group adjacent
+elements with the same value
+together. Return the total
+number of such groups."
+
+O variantes como:
+
+"You are given a string S.
+A 'run' is a maximal sequence
+of identical consecutive
+characters. Return the number
+of distinct runs in S."*/
+
+
+function solution(A) {
+    let groups = 1; // el primer
+                     // elemento siempre
+                     // inicia un grupo
+    
+    for (let i = 1; i < A.length; i++) {
+        if (A[i] !== A[i-1]) {
+            groups++;
+        }
+    }
+    
+    return groups;
+}
+
+/*"Given an array A of N
+integers, find the length of
+the longest run of consecutive
+equal elements."
+
+O variantes:
+
+"You are given a binary string.
+Find the length of the longest
+substring consisting of the
+same character."*/
+
+function solution(A) {
+    let maxRun = 1;
+    let currentRun = 1;
+    
+    for (let i = 1; i < A.length; i++) {
+        if (A[i] === A[i-1]) {
+            currentRun++;
+        } else {
+            currentRun = 1; // reinicia
+        }
+        maxRun = Math.max(maxRun, currentRun);
+    }
+    
+    return maxRun;
+}
+
+/*Una carretera de un solo
+carril en dirección Este-Oeste
+
+Tienes un array A de 0s y 1s:
+→ 0 = auto viajando hacia el
+   OESTE
+→ 1 = auto viajando hacia el
+   ESTE
+
+Un "passing" (cruce/rebase)
+ocurre cuando un auto que va
+hacia el ESTE pasa por un
+punto ANTES de que un auto
+que va hacia el OESTE pase
+por ese mismo punto
+
+Más simple: necesitas contar
+TODOS los pares (P, Q) donde
+P < Q, A[P]=0 (oeste) y
+A[Q]=1... espera, vamos a
+verificar esto con cuidado*/
+
+
+function solution(A) {
+    let ones = 0;
+    let passings = 0;
+    
+    for (let num of A) {
+        if (num === 1) {
+            ones++;
+        } else {
+            passings += ones;
+            if (passings > 1000000000) {
+                return -1;
+            }
+        }
+    }
+    
+    return passings;
+}
