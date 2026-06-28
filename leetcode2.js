@@ -308,3 +308,360 @@ function solution(A){
 
 	return expectedSum - actualSum
 }
+
+/*→ "minimum number of operations"
+→ "minimum number of moves/steps"
+→ "convert string A into string B"
+→ "transform one string to another"
+→ "given two strings/arrays/sequences"
+→ "insert, delete, or replace"*/
+
+/*
+"Given two strings word1 and
+word2, return the minimum
+number of operations required
+to convert word1 to word2.
+
+You have the following three
+operations permitted on a word:
+- Insert a character
+- Delete a character
+- Replace a character"*/
+
+/*Edit Distance*/
+function solution(s1, s2){
+
+	let m = s1.length
+	let n = s2.length
+
+	//create the table
+	//size (m+1) x (n+1)
+	let dp = Array.from({ length: m+1}, () => new Array(n+1).fill(0));
+
+	//fill the first row and column
+
+	for(let i=0; i<= m; i++){
+
+		dp[i][0] = i
+	}
+
+	for(let j=0; j<= n; j++){
+
+		dp[0][j] = j
+	}
+
+	//fill the rest of the table
+
+	for(let i = 1; i<= m; i++){
+		for(let j = 1; j <= n; j++){
+			if(s1[i-1] === s2[j-1]){
+				dp[i][j] = dp[i-1][j-1]
+			} else {
+				dp[i][j] = 1 + Math.min(
+
+					dp[i-1][j],
+					dp[i][j-1],
+					dp[i-1][j-1]
+					)
+			}
+		}
+	}
+
+	return dp[m][n]
+}
+
+/*Longest Common Subsequence (LCS)*/
+
+/*→ "longest common subsequence"
+→ "longest sequence that appears
+   in both"
+→ "find the length of the
+   longest subsequence common
+   to both strings/arrays"
+→ "characters that appear in
+   the same relative order"
+   (pero no necesariamente
+   consecutivos)*/
+
+/* "Subsequence" (subsecuencia)
+≠
+"Substring" (subcadena)
+
+Subsequence:
+→ Caracteres en el MISMO ORDEN
+→ NO necesitan ser consecutivos
+→ Ejemplo: "ace" es subsecuencia
+   de "abcde"
+
+Substring:
+→ Caracteres CONSECUTIVOS
+→ Sin saltos
+→ Ejemplo: "bcd" es substring
+   de "abcde", pero "ace" NO*/
+
+/*"Given two strings text1 and
+text2, return the length of
+their longest common subsequence.
+If there is no common
+subsequence, return 0.
+
+A subsequence of a string is
+a new string generated from
+the original string with some
+characters (can be none)
+deleted without changing the
+relative order of the remaining
+characters."*/
+
+function solution(s1, s2){
+	let m = s1.length
+	let n = s2.length
+
+	let dp = Array.from({ length: m+1}, () => new Array(n+1).fill(0))
+
+	for(let i=1; i<=m; i++){
+
+		for(let j=1; j<=n; j++){
+			if(s1[i-1] === s2[j-1]){
+				dp[i][j] = dp[i-1][j-1] + 1
+			} else {
+				dp[i][j] = Math.max(
+
+					dp[i-1][j],
+					dp[i][j-1]
+					)
+			}
+		}
+	}
+
+	return dp[m][n]
+}
+
+
+/*Distinct Subsequences */
+
+function solution(s,t){
+
+	let m = s.length
+	let n = t.length
+
+	let dp = Array.from({length: m+1}, () => new Array(n+1).fill(0))
+
+	for(let i=0; i<=m; i++){
+		dp[i][0] = 1
+	}
+
+	for(let i=1; i<=m; i++){
+		for(let j=1; j<=n; j++){
+			if(s[i-1] === t[j-1]){
+				dp[i][j] = dp[i-1][j-1] + dp[i-1][j]
+			} else {
+				dp[i][j] = dp[i-j][j]
+			}
+		}
+	}
+
+	return dp[m][n]
+}
+
+
+/*Distinct Subsequences */
+
+function solution(s,t){
+
+	let m = s.length
+	let n = t.length
+
+	let dp = Array.from({length: m+1}, () => new Array(n+1).fill(0))
+
+	for(let i=0; i<=m; i++){
+		dp[i][0] = 1
+	}
+
+	for(let i=1; i<=m; i++){
+		for(let j=1; j<=n; j++){
+			if(s[i-1] === t[j-1]){
+				dp[i][j] = dp[i-1][j-1] + dp[i-1][j]
+			} else {
+				dp[i][j] = dp[i-j][j]
+			}
+		}
+	}
+
+	return dp[m][n]
+}
+
+//Greedy
+/*c*/
+
+function solution(people, cars) {
+    people.sort((a, b) => b - a);  // descendente
+    cars.sort((a, b) => b - a);    // descendente
+    
+    let count = 0;
+    let carIndex = 0;
+    
+    for (let i = 0; i < people.length; i++) {
+        if (carIndex < cars.length && 
+            cars[carIndex] >= people[i]) {
+            count++;
+            carIndex++;
+        }
+    }
+    
+    return count;
+}
+
+//cookies
+function solution(g, s) {
+    g.sort((a, b) => a - b);  // ascendente
+    s.sort((a, b) => a - b);  // ascendente
+    
+    let childIndex = 0;
+    let cookieIndex = 0;
+    
+    while (childIndex < g.length && 
+           cookieIndex < s.length) {
+        if (s[cookieIndex] >= g[childIndex]) {
+            childIndex++;
+        }
+        cookieIndex++;
+    }
+    
+    return childIndex;
+}
+
+function solution(S,T){
+
+	let n = S.length
+	let digits = S.split('').map(Number)
+	let totalMoves = 0
+
+	for(let i=0; i<n-1; i++){
+
+		let target = Number(T[i])
+		let current = digits[i]
+
+		let moves = (target - current + 10) % 10
+
+		totalMoves += moves
+
+		digits[i + 1] = (digits[i + 1] + moves) % 10
+	}
+
+
+	if(digits[n-1] !== Number(T[n-1])){
+		return -1
+	}
+
+	return totalMoves
+}
+
+
+function solution(P,S){
+	let totalPeople = P.reduce((sum, p) => sum + p, 0)
+	S.sort((a,b) => b - a)
+
+	let acum = 0
+	let cars = 0
+
+	for(let seats of S){
+		acum += seats
+		cars++
+		if(acum >= totalPeople){
+			break
+		}
+	}
+
+	return cars
+}
+
+
+/*There is a road consisting of
+N segments, numbered from 0
+to N-1, represented by a
+string S.
+
+Segment S[K] of the road may
+contain a pothole, denoted by
+a single uppercase 'x'
+character, or may be a good
+segment without any potholes,
+denoted by a single dot '.'.
+
+For example, string ".x..x."
+means that there are two
+potholes in total in the road:
+one is located in segment S[1]
+and one in segment S[4]. All
+other segments are good.
+
+The road fixing machine can
+patch over three consecutive
+segments at once with asphalt
+and repair all the potholes
+located within each of these
+segments. Good or already
+repaired segments remain good
+after patching them.
+
+Your task is to compute the
+minimum number of patches
+required to repair all the
+potholes in the road.
+
+Write a function:
+
+function solution(S);
+
+that, given a string S
+consisting of N segments,
+returns the minimum number
+of patches needed to repair
+all the potholes.
+*/
+function solution(S){
+	let n = S.length
+	let patches = 0
+	let i = 0
+
+	while( i < n){
+		if(S[i] === 'x'){
+			patches++
+
+			let start = Math.min(i, n - 3)
+
+			i = start + 3
+		} else {
+			i++
+		}
+	}
+
+	return patches
+}
+
+
+//palindrome
+
+function solution(N, K) {
+    let result = new Array(N);
+    let numPairs = Math.floor(N / 2);
+    
+    for (let pairIndex = 0; pairIndex < numPairs; pairIndex++) {
+        let letterIndex = pairIndex % K;
+        let letter = String.fromCharCode(97 + letterIndex);
+        // 97 = código ASCII de 'a'
+        
+        result[pairIndex] = letter;
+        result[N - 1 - pairIndex] = letter;
+        // posición espejo
+    }
+    
+    if (N % 2 === 1) {
+        // hay centro
+        let centerLetter = String.fromCharCode(97 + (numPairs % K));
+        result[Math.floor(N / 2)] = centerLetter;
+    }
+    
+    return result.join('');
+}
