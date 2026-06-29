@@ -763,3 +763,79 @@ function solution(A) {
     
     return passings;
 }
+
+
+
+function minMoves(arr) {
+    // Escenario A: 1s a la
+    // izquierda, 0s a la derecha
+    let zeros = 0;
+    let swapsA = 0;
+    
+    for (let num of arr) {
+        if (num === 0) {
+            zeros++;
+        } else {
+            swapsA += zeros;
+        }
+    }
+    
+    // Escenario B: 0s a la
+    // izquierda, 1s a la derecha
+    let ones = 0;
+    let swapsB = 0;
+    
+    for (let num of arr) {
+        if (num === 1) {
+            ones++;
+        } else {
+            swapsB += ones;
+        }
+    }
+    
+    return Math.min(swapsA, swapsB);
+}
+
+
+
+/*Given an array A consisting
+of N integers, your task is
+to find the first element of
+array A that is unique — that
+is, occurs exactly once in
+the array.
+
+Write a function:
+
+function solution(A);
+
+that, given an array A, returns
+the value of the first unique
+element. If there is no such
+element, return -1.
+
+Example:
+Given A = [2, 3, 3, 2, 5],
+the function should return 5.
+
+Given A = [1, 1, 2, 2],
+the function should return -1.*/
+
+function solution(A) {
+    let counts = new Map();
+    
+    // Primera pasada: contar
+    for (let num of A) {
+        counts.set(num, (counts.get(num) || 0) + 1);
+    }
+    
+    // Segunda pasada: encontrar
+    // el primer único
+    for (let num of A) {
+        if (counts.get(num) === 1) {
+            return num;
+        }
+    }
+    
+    return -1; // no hay ningún único
+}
